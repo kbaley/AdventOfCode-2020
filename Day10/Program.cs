@@ -22,48 +22,33 @@ namespace AoC
             var dist = "1";
             for (var i = 1; i < input.Length; i++)
             {
-                joltDistribution[input[i] - input[i-1] - 1] += 1;
-                dist += (input[i] - input[i-1]).ToString();
+                joltDistribution[input[i] - input[i - 1] - 1] += 1;
+                dist += (input[i] - input[i - 1]).ToString();
             }
-            // System.Console.WriteLine($"{joltDistribution[0]}:{joltDistribution[1]}:{joltDistribution[2]}");
             System.Console.WriteLine(joltDistribution[0] * joltDistribution[2]);
 
             // Part 2
-            // Formula:
-            // Start with 1
-            // Count the groups of ones in the distribution
-            // If it's a group of two, multiply by 2
-            // If it's a group of three, multiply by 4
-            // If it's a group of four, multiply by 7
-            // I calculated these manually; e.g. a group of four 1's can be arranged
-            // 7 ways with the numbers 1, 2, and 3:
-            //   1111
-            //   112
-            //   121
-            //   211
-            //   22
-            //   13
-            //   31
-            // haven't been able to figure out what the formula is but luckily, the input has no groups of 1-jolts
-            // higher than four
-            var oneDist = dist.Split('3');
+            var oneDist = dist.Split('3', StringSplitOptions.RemoveEmptyEntries);
             long result = 1;
+            var tribonaccis = GetTribonaccis(oneDist.Max(x => x.Length) + 3);
             foreach (var item in oneDist)
             {
-                switch (item.Length) {
-                    case 2:
-                        result *= 2;
-                        break;
-                    case 3:
-                        result *= 4;
-                        break;
-                    case 4:
-                        result *= 7;
-                        break;
-                }
+                result *= tribonaccis[item.Length + 2];
             }
             System.Console.WriteLine(result);
             Console.WriteLine("Done");
+        }
+        static int[] GetTribonaccis(int length)
+        {
+            var tribonaccis = new int[length];
+            tribonaccis[0] = 0;
+            tribonaccis[1] = 0;
+            tribonaccis[2] = 1;
+            for (var i = 3; i < tribonaccis.Length; i++)
+            {
+                tribonaccis[i] = tribonaccis[i - 1] + tribonaccis[i - 2] + tribonaccis[i - 3];
+            }
+            return tribonaccis;
         }
     }
 }
