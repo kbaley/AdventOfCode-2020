@@ -30,10 +30,10 @@ namespace AoC
             // Part 2
             var oneDist = dist.Split('3', StringSplitOptions.RemoveEmptyEntries);
             long result = 1;
-            var tribonaccis = GetTribonaccis(oneDist.Max(x => x.Length) + 3);
+            var tribonaccis = GetTribonaccis(oneDist.Max(x => x.Length));
             foreach (var item in oneDist)
             {
-                result *= tribonaccis[item.Length + 2];
+                result *= tribonaccis[item.Length - 1];
             }
             System.Console.WriteLine(result);
             Console.WriteLine("Done");
@@ -41,9 +41,9 @@ namespace AoC
         static int[] GetTribonaccis(int length)
         {
             var tribonaccis = new int[length];
-            tribonaccis[0] = 0;
-            tribonaccis[1] = 0;
-            tribonaccis[2] = 1;
+            tribonaccis[0] = 1;
+            tribonaccis[1] = 2;
+            tribonaccis[2] = 4;
             for (var i = 3; i < tribonaccis.Length; i++)
             {
                 tribonaccis[i] = tribonaccis[i - 1] + tribonaccis[i - 2] + tribonaccis[i - 3];
