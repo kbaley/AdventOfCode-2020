@@ -39,16 +39,16 @@ namespace AoC
                         break;
                     case 'F':
                         switch (orientation) {
-                            case 0:
+                            case 0:     // EAST
                                 x += value;
                                 break;
-                            case 1:
+                            case 1:     // SOUTH
                                 y -= value;
                                 break;
-                            case 2:
+                            case 2:     // WEST
                                 x -= value;
                                 break;
-                            case 3:
+                            case 3:     // NORTH
                                 y += value;
                                 break;
                         }
