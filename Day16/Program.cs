@@ -65,8 +65,8 @@ namespace AoC
             for (var j = 0; j < myTicket.Length; j++)
             {
                 var fieldValues = validTickets.Select(t => t[j]).ToArray();
-                var invalidFields = fields.Where(f => fieldValues.All(n => f.Value.Contains(n)));
-                foreach (var f in invalidFields)
+                var possibleFields = fields.Where(f => fieldValues.All(n => f.Value.Contains(n)));
+                foreach (var f in possibleFields)
                 {
                     fieldLocations[f.Key].Add(j);
                 }
