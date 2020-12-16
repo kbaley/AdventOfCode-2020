@@ -60,15 +60,15 @@ namespace AoC
             var fieldLocations = new Dictionary<string, List<int>>();
             foreach (var field in fields.Keys)
             {
-                fieldLocations.Add(field, Enumerable.Range(0, fields.Keys.Count).ToList());    
+                fieldLocations.Add(field, new List<int>());    
             }
             for (var j = 0; j < myTicket.Length; j++)
             {
                 var fieldValues = validTickets.Select(t => t[j]).ToArray();
-                var invalidFields = fields.Where(f => fieldValues.Any(n => !f.Value.Contains(n)));
+                var invalidFields = fields.Where(f => fieldValues.All(n => f.Value.Contains(n)));
                 foreach (var f in invalidFields)
                 {
-                    fieldLocations[f.Key].Remove(j);
+                    fieldLocations[f.Key].Add(j);
                 }
             }
             while (fieldLocations.Values.Any(f => f.Count != 1)) {
