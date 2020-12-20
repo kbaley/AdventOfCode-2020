@@ -25,26 +25,24 @@ namespace AoC
             }
 
             // Part 1
-            var corners = new List<Tile>();
-            for (i = 0; i < tiles.Count; i++)
+            var corners = new List<long>();
+            foreach (var tile in tiles)
             {
-                var tile = tiles[i];
                 var edges = tile.Edges();
                 var matches = new List<int>();
                 for (var j = 0; j < edges.Length; j++)
                 {
-                    matches.AddRange(tiles.Where(t => t.Number != tile.Number && t.Edges().Any(e => e == edges[j])).Select(t => t.Number));
+                    matches.AddRange(
+                        tiles
+                            .Where(t => t.Number != tile.Number && t.Edges().Any(e => e == edges[j]))
+                            .Select(t => t.Number));
                 }
                 if (matches.Distinct().Count() == 2) {
-                    corners.Add(tile);
+                    corners.Add(tile.Number);
                 }
             }
-            long product = 1;
-            foreach (var tile in corners)
-            {
-                product *= tile.Number;     
-            }
-            System.Console.WriteLine(product);
+            long product = corners.Aggregate(1L, (x, y) => x * y);
+            System.Console.WriteLine($"Part 1: {product}");
 
             // Part 2
 
