@@ -46,11 +46,12 @@ namespace AoC
                 foreach (var rule in rules)
                 {
                     if (!rule.IsTranslated && rule.References.All(r => translated.Contains(r))) {
-                        ProcessRule(rule, rules);
+                        ProcessRule(rule, rules, false); // Set third param to true for Part 2
                     }
                 }
             }
             i++;    
+            var inputStart = i;
             var regex = "^" + rules.First(r => r.Number == 0).RegEx + "$";
             var count = 0;
             while ( i < input.Length) {
@@ -62,6 +63,7 @@ namespace AoC
             System.Console.WriteLine(count);
 
             // Part 2
+            // See ProcessRule call above in Part 1
 
             Console.WriteLine("Done");
         }
@@ -74,15 +76,30 @@ namespace AoC
             return pieces[0].Split(' ').Length;
         }
 
-        private static void ProcessRule(Rule rule, List<Rule> rules)
+        private static void ProcessRule(Rule rule, List<Rule> rules, bool isPartTwo = false)
         {
-            // System.Console.WriteLine($"{rule.Number}:{string.Join(',', rule.References)}:{rule.RegEx}:{rule.OrSplit}");
             if (rule.References.Length == 0) return;
             var rule1 = rules.First(r => r.Number == rule.References[0]);
             var rule2 = rule.References.Length < 2 ? null : rules.First(r => r.Number == rule.References[1]);
             var rule3 = rule.References.Length < 3 ? null : rules.First(r => r.Number == rule.References[2]);
             var rule4 = rule.References.Length < 4 ? null : rules.First(r => r.Number == rule.References[3]);
             var expr = $"{rule1.RegEx}";
+            if (rule.Number == 8 && isPartTwo) {
+                expr += "+";
+                rule.IsTranslated = true;
+                rule.RegEx = "(" + expr + ")";
+                return;
+            }
+            if (rule.Number == 11 && isPartTwo) {
+                expr += rule2.RegEx;
+                expr += $"|{rule1.RegEx}{{2}}{rule2.RegEx}{{2}}";
+                expr += $"|{rule1.RegEx}{{3}}{rule2.RegEx}{{3}}";
+                expr += $"|{rule1.RegEx}{{4}}{rule2.RegEx}{{4}}";
+                expr += $"|{rule1.RegEx}{{5}}{rule2.RegEx}{{5}}";
+                rule.IsTranslated = true;
+                rule.RegEx = "(" + expr + ")";
+                return;
+            }
             if (rule2 != null) {
                 if (rule.OrSplit == 1) {
                     expr += "|";
@@ -102,9 +119,6 @@ namespace AoC
                 expr += rule4.RegEx;
             }
             rule.RegEx = $"({expr})";
-            // if (rule.Number == 42 || rule.Number == 31) {
-                // System.Console.WriteLine($"{rule.Number}:{string.Join(',', rule.References)}:{rule.RegEx}");
-            // }
 
             rule.IsTranslated = true;
         }
