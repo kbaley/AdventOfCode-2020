@@ -305,16 +305,5 @@ namespace AoC
         public void FlipVertical() {
             Data = Data.Reverse().ToArray();
         }
-    
-        public bool IsPositioned() {
-            return X > -1;
-        }
-
-        public int GetMatchingEdgeIndex(string edge, List<Tile> tiles) {
-
-            var match = tiles.SingleOrDefault(t => t.Number != Number && t.Edges().Any(e => e == edge));
-            if (match == null) return -1;
-            return match.Edges().ToList().IndexOf(edge);
-        }
     }
 }
