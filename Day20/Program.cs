@@ -30,12 +30,14 @@ namespace AoC
             {
                 var edges = tile.Edges();
                 var matches = new List<int>();
+                System.Console.WriteLine($"Tile {tile.Number}");
                 for (var j = 0; j < edges.Length; j++)
                 {
-                    matches.AddRange(
-                        tiles
-                            .Where(t => t.Number != tile.Number && t.Edges().Any(e => e == edges[j]))
-                            .Select(t => t.Number));
+                    var matchedTiles = tiles
+                            .Where(t => t.Number != tile.Number && t.Edges().Any(e => e == edges[j]));
+                    System.Console.WriteLine(matchedTiles.Count());
+                    
+                    matches.AddRange(matchedTiles.Select(t => t.Number));
                 }
                 if (matches.Distinct().Count() == 2) {
                     corners.Add(tile.Number);
