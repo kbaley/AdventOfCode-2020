@@ -22,9 +22,7 @@ namespace AoC
                 Move(list, max, nodeList);
             }
             while (list.First() != 1) {
-                var first = list.First;
-                list.RemoveFirst();
-                list.AddLast(first);
+                MoveHeadToEnd(list);
             }
 
             System.Console.WriteLine($"Part 1: {string.Join("", list.Skip(1))}");
@@ -45,6 +43,12 @@ namespace AoC
             System.Console.WriteLine($"Part 2: {one.Next.Value * one.Next.Next.Value}");
 
             Console.WriteLine("Done");
+        }
+
+        private static void MoveHeadToEnd(LinkedList<long> list) {
+            var first = list.First;
+            list.RemoveFirst();
+            list.AddLast(first);
         }
 
         private static Dictionary<long, LinkedListNode<long>> BuildNodeList(LinkedList<long> list) {
@@ -78,8 +82,7 @@ namespace AoC
             list.AddAfter(targetNode, one);
             list.AddAfter(one, two);
             list.AddAfter(two, three);
-            list.RemoveFirst();
-            list.AddLast(head);
+            MoveHeadToEnd(list);
         }
     }
 }
